@@ -3,9 +3,10 @@ package com.katalon.plugin.keyword.file
 import org.apache.commons.io.FileUtils
 import com.kms.katalon.core.annotation.Keyword
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
+import com.kms.katalon.core.util.KeywordUtil
 
-public class DownloadKeywords {
-	private String downloadFolder = System.getProperty("user.home") + "\\Downloads\\"
+public class DownloadAssertionKeywords {
+	private String downloadFolder = System.getProperty("user.home").toString().replace("\\", "/") + "/Downloads/"
 	private int waitTime = 5
 
 	/******************************************************
@@ -15,7 +16,12 @@ public class DownloadKeywords {
 	 */
 	@Keyword
 	def waitForFileExist(String downloadFileName, int timeOut=waitTime) {
-		return FileUtils.waitFor(new File(downloadFolder + downloadFileName), timeOut)
+		try {
+			return FileUtils.waitFor(new File(downloadFolder + downloadFileName), timeOut)
+		} catch (ex) {
+			KeywordUtil.markWarning("WARNING :" + ex.getMessage())
+			return false
+		}
 	}
 
 	/******************************************************
@@ -25,7 +31,18 @@ public class DownloadKeywords {
 	 */
 	@Keyword
 	def verifyDownloadFileExist(String downloadFileName, int timeOut=waitTime) {
-		WebUI.verifyEqual(waitForFileExist(downloadFileName, timeOut), true)
+		if(waitForFileExist(downloadFileName, timeOut)) KeywordUtil.markPassed(downloadFileName + " is existed")
+		else KeywordUtil.markFailed(downloadFileName + " is not existed")
+	}
+
+	/******************************************************
+	 * Get file content
+	 * @param downloadFileName: the download file name
+	 * @return the file size (byte)
+	 */
+	@Keyword
+	def getDownloadFileContent(String downloadFileName) {
+		return FileUtils.readFileToString(new File(downloadFolder + downloadFileName))
 	}
 
 	/******************************************************
@@ -62,13 +79,14 @@ public class DownloadKeywords {
 	}
 
 	/******************************************************
-	 * Verify file data
+	 * Verify file
 	 * @param downloadFileName: the download file name
 	 * @param expectedFilePath: the expected file path to compare
 	 */
 	@Keyword
-	def verifyDownloadFileData(String downloadFileName, String expectedFilePath) {
-		WebUI.verifyEqual(compareDownloadFile(downloadFileName, expectedFilePath), true)
+	def verifyDownloadFile(String downloadFileName, String expectedFilePath) {
+		if(compareDownloadFile(downloadFileName, expectedFilePath)) KeywordUtil.markPassed(downloadFileName + " is the same " + expectedFilePath)
+		else KeywordUtil.markFailed(downloadFileName + " is not the same " + expectedFilePath)
 	}
 
 	/******************************************************

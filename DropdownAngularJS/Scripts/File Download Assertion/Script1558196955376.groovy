@@ -16,13 +16,13 @@ import internal.GlobalVariable as GlobalVariable
 String home = System.getProperty("user.home") + "\\Downloads\\"
 println home
 
-a = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadKeywords.compareDownloadFile'("aThang1.jpg", "D:\\aThang.jpg")
+a = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.compareDownloadFile'("aThang1.jpg", "D:\\aThang.jpg")
 println a.toString()
 
-b = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadKeywords.getDownloadFileSize'("Lan_Broadcom_14.0.1.0_W7x86W7x64_A.zip")
+b = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.getDownloadFileSize'("Lan_Broadcom_14.0.1.0_W7x86W7x64_A.zip")
 println b.toString()
 
-c = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadKeywords.waitForFileExist'("Katalon Training.xlsx")
+c = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.waitForFileExist'("Katalon Training.xlsx")
 println c.toString()
-CustomKeywords.'com.katalon.plugin.keyword.file.DownloadKeywords.deleteDownloadFile'("Filnal_-_1.zip")
-CustomKeywords.'com.katalon.plugin.keyword.file.DownloadKeywords.clearDownloadFolder'()
+CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.deleteDownloadFile'("Filnal_-_1.zip")
+CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.clearDownloadFolder'()
