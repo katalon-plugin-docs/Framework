@@ -16,29 +16,34 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def waitForFileExist(String downloadFileName, int timeOut=waitTime) {
-		try {
-			return FileUtils.waitFor(new File(downloadFolder + downloadFileName), timeOut)
-		} catch (ex) {
-			KeywordUtil.markWarning("WARNING :" + ex.getMessage())
-			return false
-		}
+		return FileUtils.waitFor(new File(downloadFolder + downloadFileName), timeOut)
 	}
 
 	/******************************************************
-	 * Verify file existing
+	 * Verify file exist
 	 * @param downloadFileName: the download file name
 	 * @param timeOut: the second time to wait for file existing
 	 */
 	@Keyword
 	def verifyDownloadFileExist(String downloadFileName, int timeOut=waitTime) {
-		if(waitForFileExist(downloadFileName, timeOut)) KeywordUtil.markPassed(downloadFileName + " is existed")
-		else KeywordUtil.markFailed(downloadFileName + " is not existed")
+		if(waitForFileExist(downloadFileName, timeOut)) KeywordUtil.markPassed(downloadFileName + " is existed.")
+		else KeywordUtil.markFailedAndStop(downloadFileName + " is not existed.")
+	}
+
+	/******************************************************
+	 * Verify file not exist
+	 * @param downloadFileName: the download file name
+	 */
+	@Keyword
+	def verifyDownloadFileNotExist(String downloadFileName) {
+		if(waitForFileExist(downloadFileName, 0)) KeywordUtil.markFailedAndStop(downloadFileName + " still exists.")
+		else KeywordUtil.markPassed(downloadFileName + " is not existed.")
 	}
 
 	/******************************************************
 	 * Get file content
 	 * @param downloadFileName: the download file name
-	 * @return the file size (byte)
+	 * @return the file content
 	 */
 	@Keyword
 	def getDownloadFileContent(String downloadFileName) {
@@ -85,8 +90,8 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def verifyDownloadFile(String downloadFileName, String expectedFilePath) {
-		if(compareDownloadFile(downloadFileName, expectedFilePath)) KeywordUtil.markPassed(downloadFileName + " is the same " + expectedFilePath)
-		else KeywordUtil.markFailed(downloadFileName + " is not the same " + expectedFilePath)
+		if(compareDownloadFile(downloadFileName, expectedFilePath)) KeywordUtil.markPassed(downloadFileName + " and " + expectedFilePath + " are the same.")
+		else KeywordUtil.markFailedAndStop(downloadFileName + " and " + expectedFilePath + " are not the same.")
 	}
 
 	/******************************************************
@@ -95,7 +100,15 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def deleteDownloadFile(String downloadFileName) {
-		FileUtils.forceDeleteOnExit(new File(downloadFolder + downloadFileName))
+		File deleteFile = new File(downloadFolder + downloadFileName)
+		if(FileUtils.waitFor(deleteFile, 0)) {
+			FileUtils.forceDelete(deleteFile)
+			int countTime = 10
+			while (FileUtils.waitFor(deleteFile, 0) && countTime > 0){
+				Thread.sleep(500)
+				countTime--
+			}
+		}
 	}
 
 	/******************************************************
