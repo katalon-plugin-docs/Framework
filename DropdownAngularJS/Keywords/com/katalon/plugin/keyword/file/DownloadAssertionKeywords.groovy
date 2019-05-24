@@ -6,8 +6,8 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.util.KeywordUtil
 
 public class DownloadAssertionKeywords {
-	private String downloadFolder = System.getProperty("user.home").toString().replace("\\", "/") + "/Downloads/"
-	private int waitTime = 5
+	static String DOWNLOAD_FOLDER = System.getProperty("user.home").toString().replace("\\", "/") + "/Downloads/"
+	static int WAIT_TIME = 5
 
 	/******************************************************
 	 * Wait for file exist
@@ -15,8 +15,8 @@ public class DownloadAssertionKeywords {
 	 * @param timeOut: the second time to wait for file existing
 	 */
 	@Keyword
-	def waitForFileExist(String downloadFileName, int timeOut=waitTime) {
-		return FileUtils.waitFor(new File(downloadFolder + downloadFileName), timeOut)
+	def waitForFileExist(String downloadFileName, int timeOut=WAIT_TIME) {
+		return FileUtils.waitFor(new File(DOWNLOAD_FOLDER + downloadFileName), timeOut)
 	}
 
 	/******************************************************
@@ -25,7 +25,7 @@ public class DownloadAssertionKeywords {
 	 * @param timeOut: the second time to wait for file existing
 	 */
 	@Keyword
-	def verifyDownloadFileExist(String downloadFileName, int timeOut=waitTime) {
+	def verifyDownloadFileExist(String downloadFileName, int timeOut=WAIT_TIME) {
 		if(waitForFileExist(downloadFileName, timeOut)) KeywordUtil.markPassed(downloadFileName + " is existed.")
 		else KeywordUtil.markFailedAndStop(downloadFileName + " is not existed.")
 	}
@@ -47,7 +47,7 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def getDownloadFileContent(String downloadFileName) {
-		return FileUtils.readFileToString(new File(downloadFolder + downloadFileName))
+		return FileUtils.readFileToString(new File(DOWNLOAD_FOLDER + downloadFileName))
 	}
 
 	/******************************************************
@@ -57,7 +57,7 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def getDownloadFileSize(String downloadFileName) {
-		return FileUtils.sizeOfAsBigInteger(new File(downloadFolder + downloadFileName))
+		return FileUtils.sizeOfAsBigInteger(new File(DOWNLOAD_FOLDER + downloadFileName))
 	}
 
 	/******************************************************
@@ -78,7 +78,7 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def compareDownloadFile(String downloadFileName, String filePath) {
-		File file1 = new File(downloadFolder + downloadFileName)
+		File file1 = new File(DOWNLOAD_FOLDER + downloadFileName)
 		File file2 = new File(filePath)
 		return FileUtils.contentEquals(file1, file2)
 	}
@@ -100,7 +100,7 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def deleteDownloadFile(String downloadFileName) {
-		File deleteFile = new File(downloadFolder + downloadFileName)
+		File deleteFile = new File(DOWNLOAD_FOLDER + downloadFileName)
 		if(FileUtils.waitFor(deleteFile, 0)) {
 			FileUtils.forceDelete(deleteFile)
 			int countTime = 10
@@ -116,6 +116,6 @@ public class DownloadAssertionKeywords {
 	 */
 	@Keyword
 	def clearDownloadFolder() {
-		FileUtils.cleanDirectory(new File(downloadFolder))
+		FileUtils.cleanDirectory(new File(DOWNLOAD_FOLDER))
 	}
 }

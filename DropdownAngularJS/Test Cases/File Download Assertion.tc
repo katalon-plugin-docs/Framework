@@ -3,6 +3,9 @@
    <description></description>
    <name>File Download Assertion</name>
    <tag></tag>
-   <comment></comment>
+   <comment>File status : &quot; + fileStatus.toString()
+File content : &quot; + fileContent
+File size : &quot; + fileSize.toString()
+Compare file status : &quot; + compareFile.toString()</comment>
    <testCaseGuid>eed95448-32ce-415c-988f-adbc601ba1a0</testCaseGuid>
 </TestCaseEntity>

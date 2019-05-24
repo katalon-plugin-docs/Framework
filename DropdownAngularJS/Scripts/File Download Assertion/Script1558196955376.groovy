@@ -1,5 +1,11 @@
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
+/*DownloadAssertionKeywords.setWAIT_TIME(user-timeout)
+ KeywordUtil.logInfo("The wait time is: " + DownloadAssertionKeywords.getWAIT_TIME())
+ 
+ DownloadAssertionKeywords.setDOWNLOAD_FOLDER("<user-dir>")
+ KeywordUtil.logInfo("The wait time is: " + DownloadAssertionKeywords.getDOWNLOAD_FOLDER())*/
+
 'Wait for file exist'
 boolean fileStatus = CustomKeywords.'com.katalon.plugin.keyword.file.DownloadAssertionKeywords.waitForFileExist'("Documents.txt")
 WebUI.comment("File status : " + fileStatus.toString())
